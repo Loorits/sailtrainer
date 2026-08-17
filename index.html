@@ -39,6 +39,12 @@ body{margin:0;background:var(--paper);color:var(--ink);
 .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
 .kicker{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink60);margin:0 0 10px}
 
+/* announcement ribbon */
+.ribbon{background:var(--ink);color:var(--paper)}
+.ribbon .wrap{display:flex;align-items:center;gap:10px;padding-top:9px;padding-bottom:9px}
+.ribbon p{margin:0;font-size:14.5px;line-height:1.35}
+.ribbon .dot{flex:0 0 auto;width:7px;height:7px;border-radius:50%;background:var(--magenta)}
+
 /* nav */
 nav{position:sticky;top:0;z-index:20;background:rgba(231,237,233,.94);
   backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
@@ -93,7 +99,7 @@ td.num{font-family:'IBM Plex Mono',monospace;color:var(--ink60);white-space:nowr
 td .tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--magenta)}
 
 /* compare */
-.cmp td:nth-child(2),.cmp td:nth-child(3),.cmp th:nth-child(2),.cmp th:nth-child(3){text-align:center;width:96px}
+.cmp td:nth-child(2),.cmp th:nth-child(2){text-align:center;width:110px}
 .yes{color:var(--teal);font-weight:600}
 .no{color:var(--ink30)}
 
@@ -128,11 +134,16 @@ footer a{color:var(--ink60)}
 </head>
 <body>
 
+<div class="ribbon"><div class="wrap">
+  <span class="dot"></span>
+  <p>To celebrate Sugar's outstanding ORC European Championship result, SailTrainer is available free of charge for a limited time. More details coming soon.</p>
+</div></div>
+
 <nav><div class="wrap">
   <a class="logo" href="#top">TRIM</a>
   <a class="l" href="#how">How it works</a>
   <a class="l" href="#boats">Boats</a>
-  <a class="l" href="#pricing">Pricing</a>
+  <a class="l" href="#pricing">What's included</a>
   <span class="sp"></span>
   <a class="btn sm" href="./app.html">Open the trainer</a>
 </div></nav>
@@ -149,9 +160,9 @@ footer a{color:var(--ink60)}
       <a class="btn ghost" href="#pricing">What's included</a>
       <span class="note">No account. Runs in the browser.</span>
     </div>
-    <p class="launch"><strong>Everything is unlocked until 17 November 2026.</strong>
-      All five boats, the 3D and cutaway views, the full rig and weather — no card, no signup.
-      I'd rather find out what needs fixing than charge for it half-finished.</p>
+    <p class="launch"><strong>Everything is unlocked, free of charge.</strong>
+      All five boats, the 3D and cutaway views, the full rig and weather — no account, no card,
+      nothing held back.</p>
   </div>
   <div class="shot">
     <img src="./shot-mono.svg" alt="3D view of a 40 ft cruiser-racer sailing upwind, sails shaded by flow state" />
@@ -215,12 +226,12 @@ footer a{color:var(--ink60)}
       from ballast, catamarans from beam — a different equation, which is why the cat carries 117 m²
       at three degrees of heel and warns you about righting moment instead of heel angle.</p>
     <table>
-      <tr><th>Boat</th><th>Disp</th><th>Beam</th><th>SA</th><th></th></tr>
-      <tr><td>40 ft cruiser-racer</td><td class="num">8.6 t</td><td class="num">4.0 m</td><td class="num">94 m²</td><td><span class="tag">Free</span></td></tr>
-      <tr><td>35 ft sportboat</td><td class="num">3.8 t</td><td class="num">3.4 m</td><td class="num">74 m²</td><td></td></tr>
-      <tr><td>48 ft bluewater cruiser</td><td class="num">18 t</td><td class="num">4.5 m</td><td class="num">132 m²</td><td></td></tr>
-      <tr><td>42 ft cruising catamaran</td><td class="num">12.5 t</td><td class="num">7.2 m</td><td class="num">117 m²</td><td></td></tr>
-      <tr><td>45 ft performance catamaran</td><td class="num">9.0 t</td><td class="num">7.6 m</td><td class="num">140 m²</td><td></td></tr>
+      <tr><th>Boat</th><th>Disp</th><th>Beam</th><th>SA</th></tr>
+      <tr><td>40 ft cruiser-racer</td><td class="num">8.6 t</td><td class="num">4.0 m</td><td class="num">94 m²</td></tr>
+      <tr><td>35 ft sportboat</td><td class="num">3.8 t</td><td class="num">3.4 m</td><td class="num">74 m²</td></tr>
+      <tr><td>48 ft bluewater cruiser</td><td class="num">18 t</td><td class="num">4.5 m</td><td class="num">132 m²</td></tr>
+      <tr><td>42 ft cruising catamaran</td><td class="num">12.5 t</td><td class="num">7.2 m</td><td class="num">117 m²</td></tr>
+      <tr><td>45 ft performance catamaran</td><td class="num">9.0 t</td><td class="num">7.6 m</td><td class="num">140 m²</td></tr>
     </table>
   </div>
   <div class="shot">
@@ -251,68 +262,34 @@ footer a{color:var(--ink60)}
 </div></section>
 
 <section id="pricing"><div class="wrap">
-  <h2>Free for everyone until 17 November</h2>
-  <p class="sub">Trim is in its first season. Until 17 November 2026 every feature below is open to
-    everyone — no account, no card. After that Easy Trim stays free forever, and the deeper
-    features become a subscription. The table shows where that line will fall.</p>
+  <h2>Everything below is free right now</h2>
+  <p class="sub">Every feature listed here is open to everyone today — no account, no card, no
+    trial clock. A paid tier will arrive eventually; when it does, the free trainer stays free and
+    you will hear about it here first.</p>
 
   <table class="cmp">
-    <tr><th>Open to everyone until 17 Nov</th><th>Easy Trim</th><th>Pro</th></tr>
-    <tr><td>40 ft cruiser-racer</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-    <tr><td>Cockpit and plan views</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-    <tr><td>Sheets, traveller, vang, outhaul, car</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-    <tr><td>Live target speed and % of target</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-    <tr><td>Coach hints ranked by gain</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-    <tr><td>English / Estonian</td><td class="yes">✓</td><td class="yes">✓</td></tr>
-    <tr><td>3D rig view with orbit and camera presets</td><td class="no">—</td><td class="yes">✓</td></tr>
-    <tr><td>Sail cutaway sections</td><td class="no">—</td><td class="yes">✓</td></tr>
-    <tr><td>Five boats, including two catamarans</td><td class="no">—</td><td class="yes">✓</td></tr>
-    <tr><td>Backstay, runners, cunningham, halyards, furling, pole</td><td class="no">—</td><td class="yes">✓</td></tr>
-    <tr><td>Gusts, shifts, sea state, current</td><td class="no">—</td><td class="yes">✓</td></tr>
-    <tr><td>Polar diagram and ideal-trim marks</td><td class="no">—</td><td class="yes">✓</td></tr>
-    <tr><td>New boats and features as they land</td><td class="no">—</td><td class="yes">✓</td></tr>
+    <tr><th>Feature</th><th>Included</th></tr>
+    <tr><td>40 ft cruiser-racer</td><td class="yes">✓</td></tr>
+    <tr><td>Cockpit and plan views</td><td class="yes">✓</td></tr>
+    <tr><td>Sheets, traveller, vang, outhaul, car</td><td class="yes">✓</td></tr>
+    <tr><td>Live target speed and % of target</td><td class="yes">✓</td></tr>
+    <tr><td>Coach hints ranked by gain</td><td class="yes">✓</td></tr>
+    <tr><td>English / Estonian</td><td class="yes">✓</td></tr>
+    <tr><td>3D rig view with orbit and camera presets</td><td class="yes">✓</td></tr>
+    <tr><td>Sail cutaway sections</td><td class="yes">✓</td></tr>
+    <tr><td>Five boats, including two catamarans</td><td class="yes">✓</td></tr>
+    <tr><td>Backstay, runners, cunningham, halyards, furling, pole</td><td class="yes">✓</td></tr>
+    <tr><td>Gusts, shifts, sea state, current</td><td class="yes">✓</td></tr>
+    <tr><td>Polar diagram and ideal-trim marks</td><td class="yes">✓</td></tr>
+    <tr><td>New boats and features as they land</td><td class="yes">✓</td></tr>
   </table>
 
-  <div class="prices" style="margin-top:26px">
-    <div class="price feat">
-      <div class="tier">Now — until 17 Nov 2026</div>
-      <div class="amt">Free</div>
-      <div class="per">everything unlocked, no account, no card</div>
-      <ul>
-        <li>All five boats, catamarans included</li>
-        <li>3D rig view and cutaway sections</li>
-        <li>Full rig, weather and sea state</li>
-        <li>Polar diagram and ideal-trim marks</li>
-      </ul>
-      <a class="btn pink" href="./app.html">Open the trainer</a>
-    </div>
-    <div class="price">
-      <div class="tier">After — Easy Trim</div>
-      <div class="amt">Free</div>
-      <div class="per">forever, no account</div>
-      <ul>
-        <li>One boat, fully simulated</li>
-        <li>Cockpit and plan views</li>
-        <li>Core trim controls</li>
-        <li>Target speed and coaching</li>
-      </ul>
-      <a class="btn ghost" href="./app.html">Open the trainer</a>
-    </div>
-    <div class="price">
-      <div class="tier">After — Pro</div>
-      <div class="amt">TBC</div>
-      <div class="per">priced before the season ends</div>
-      <ul>
-        <li>Everything in the table above</li>
-        <li>New boats and features as they land</li>
-        <li>Crew and sailing-school licences</li>
-      </ul>
-      <a class="btn ghost" href="mailto:hello@sailtrainer.eu?subject=Trim%20Pro">Tell me what it's worth</a>
-    </div>
+  <div class="cta" style="margin-top:26px">
+    <a class="btn pink" href="./app.html">Open the trainer</a>
+    <span class="note">No account. Runs in the browser.</span>
   </div>
-  <p class="pnote">Nothing to cancel and nothing to lose access to: if you use Trim now, you keep
-    using it. Anyone sailing with it during the free period gets Pro for good.
-    Crew and sailing-school licences: <a href="mailto:hello@sailtrainer.eu">get in touch</a>.</p>
+  <p class="pnote">Crew and sailing-school use is fine and welcome —
+    <a href="mailto:hello@sailtrainer.eu">get in touch</a> if you want it for a classroom.</p>
 </div></section>
 
 <section><div class="wrap">
@@ -333,14 +310,10 @@ footer a{color:var(--ink60)}
   <details><summary>Does it work on a phone?</summary>
     <p>Yes. The view stays pinned at the top while you scroll to the controls, so you can see the
       sail change as you drag a slider. The 3D view orbits with one finger.</p></details>
-  <details><summary>What happens on 17 November?</summary>
-    <p>Easy Trim carries on free for everyone. The deeper features — the extra boats, the 3D and
-      cutaway views, the full rig and weather — become a subscription, at a price I haven't set yet.
-      If you have been using Trim during the free period, you keep everything. That is not a
-      marketing line; you are the reason it will be worth paying for.</p></details>
-  <details><summary>Can I cancel?</summary>
-    <p>Any time, and you keep Easy Trim for good. Nothing you have done is locked away behind
-      the subscription.</p></details>
+  <details><summary>What's the catch?</summary>
+    <p>None. There is no account to make, no card to enter and no trial clock running. A paid tier
+      will exist one day, and it will be announced here well before anything changes — but right
+      now the whole thing is simply open.</p></details>
 </div></section>
 
 <footer><div class="wrap">

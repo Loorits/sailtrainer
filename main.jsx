@@ -12,12 +12,14 @@ import App from "./trainer.jsx";
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   LAUNCH PERIOD — everything is unlocked for everyone until this date.
-   To start charging: change FREE_UNTIL to a past date (or set it to null),
-   fill in the checkout URLs below, and rebuild app.js. Nothing else changes;
-   the whole Pro gate is still in place underneath.
+   OPEN ACCESS — every feature is unlocked for everyone, with no end date.
+   No Upgrade button is shown anywhere while this is true.
+
+   To start charging later: set ALL_FREE to false, fill in the checkout URLs
+   below, and rebuild app.js. Nothing else changes — the whole Pro gate is
+   still in place underneath, it is just switched off.
    -------------------------------------------------------------------------- */
-const FREE_UNTIL = "2026-11-17T23:59:59Z";   // three months of open access
+const ALL_FREE = true;
 
 const CONFIG = {
   // Paste your Stripe / Lemon Squeezy / Paddle payment link here.
@@ -27,24 +29,10 @@ const CONFIG = {
   storageKey: "trim.tier",
 };
 
-function launchOpen() {
-  if (!FREE_UNTIL) return false;
-  const end = Date.parse(FREE_UNTIL);
-  return isFinite(end) && Date.now() < end;
-}
-function daysLeft() {
-  const d = Math.ceil((Date.parse(FREE_UNTIL) - Date.now()) / 86400000);
-  return d > 0 ? d : 0;
-}
-function freeUntilLabel() {
-  try {
-    return new Date(Date.parse(FREE_UNTIL))
-      .toLocaleDateString("en-GB", { day: "numeric", month: "short" });
-  } catch (e) { return ""; }
-}
+function launchOpen() { return ALL_FREE; }
 
 function readTier() {
-  // During the launch period nobody hits the paywall.
+  // While access is open nobody hits the paywall.
   if (launchOpen()) return "pro";
   const q = new URLSearchParams(location.search);
   try {
@@ -64,7 +52,7 @@ function TopBar({ tier, onUpgrade }) {
     <div className="topbar">
       <a className="brand" href="./index.html">TRIM</a>
       <span className={"badge " + (tier === "pro" ? "pro" : "")}>
-        {open ? `Everything unlocked · free until ${freeUntilLabel()}`
+        {open ? "Everything unlocked · free"
           : tier === "pro" ? "Pro" : "Easy Trim · free"}
       </span>
       {open
