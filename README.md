@@ -48,6 +48,23 @@ React is loaded from a CDN via the import map in `app.html`. To remove that
 dependency, drop `--external:*` and React will be bundled into `app.js`
 (about 130 kB larger, but then the site has no third-party requests at all).
 
+## Launch period — everything free until 17 November 2026
+
+`FREE_UNTIL` at the top of `src/main.jsx` unlocks every Pro feature for every
+visitor until that date. The whole gate is still in place underneath; the date
+just short-circuits it.
+
+To start charging: set `FREE_UNTIL` to a past date (or `null`), fill in the
+checkout URLs in `CONFIG`, rebuild `app.js`, and read "Wiring up real
+subscriptions" below first — the gate is cosmetic until you do that work.
+
+To extend the free run: move the date and rebuild. One line, one commit.
+
+The landing page says 17 November in six places, and the FAQ promises that
+anyone using Trim during the free period keeps Pro. If you change the date,
+change those too — and keep that promise; it costs nothing and it is the
+reason early users will talk about it.
+
 ## Tiers
 
 | | Easy Trim (free) | Pro |
