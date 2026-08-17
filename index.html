@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Trim — learn to trim sails, not to guess</title>
+<meta name="description" content="A sail trim trainer built on a real velocity prediction model. Trim every control on five boats, watch the sail shape change, and chase a target speed that is computed, not invented." />
+<meta property="og:title" content="Trim — sail trim trainer" />
+<meta property="og:description" content="Real VPP physics. Five boats including two catamarans. A coach that ranks every adjustment by the speed it will actually add." />
+<link rel="canonical" href="https://sailtrainer.eu/" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://sailtrainer.eu/" />
+<meta property="og:site_name" content="Trim" />
+<meta property="og:image" content="https://sailtrainer.eu/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Trim — sail trim trainer" />
+<meta name="twitter:description" content="Real VPP physics. Five boats including two catamarans. A coach that ranks every adjustment by the speed it will actually add." />
+<meta name="twitter:image" content="https://sailtrainer.eu/og-cover.png" />
+<link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+<meta name="theme-color" content="#E7EDE9" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Barlow+Semi+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --paper:#E7EDE9; --panel:#F5F8F5; --sea:#B7D2D6; --deep:#9BC0C6;
+  --ink:#11242C; --ink60:rgba(17,36,44,.62); --ink30:rgba(17,36,44,.30);
+  --sand:#E7D9B4; --magenta:#BE2478; --teal:#0C7B85; --amber:#C77E12;
+  --line:rgba(17,36,44,.16);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Barlow Semi Condensed',system-ui,-apple-system,sans-serif;font-size:17px;line-height:1.45}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+.disp{font-family:'Bricolage Grotesque','Barlow Semi Condensed',sans-serif;font-weight:800;letter-spacing:-.035em}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.kicker{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink60);margin:0 0 10px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:rgba(231,237,233,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:20px;height:54px}
+nav .logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:23px;
+  letter-spacing:-.04em;text-decoration:none;color:var(--ink)}
+nav a.l{color:var(--ink60);text-decoration:none;font-size:14.5px}
+nav a.l:hover{color:var(--ink)}
+nav .sp{margin-left:auto}
+.btn{display:inline-block;font:inherit;font-size:14px;letter-spacing:.03em;padding:8px 16px;
+  border:1px solid var(--ink);background:var(--ink);color:var(--paper);text-decoration:none;
+  border-radius:2px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.pink{background:var(--magenta);border-color:var(--magenta);color:#fff}
+.btn.sm{padding:5px 12px;font-size:13px}
+
+/* hero */
+header{padding:56px 0 40px;border-bottom:1px solid var(--line)}
+.hero{display:grid;grid-template-columns:1fr;gap:26px;align-items:center}
+@media(min-width:820px){.hero{grid-template-columns:1.08fr .92fr;gap:40px}}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.04em;
+  font-size:clamp(34px,6.4vw,58px);line-height:1.02;margin:0 0 16px}
+h1 em{font-style:normal;color:var(--magenta)}
+.lede{font-size:19px;color:var(--ink60);margin:0 0 22px;max-width:33em}
+.cta{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.cta .note{font-size:13.5px;color:var(--ink60)}
+.shot{background:var(--panel);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.shot img{display:block;width:100%;height:auto}
+.shot .cap{padding:7px 10px;border-top:1px solid var(--line);font-size:12px;color:var(--ink60);
+  font-family:'IBM Plex Mono',monospace}
+
+/* strips */
+section{padding:52px 0;border-bottom:1px solid var(--line)}
+h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.035em;
+  font-size:clamp(25px,3.6vw,34px);margin:0 0 10px;line-height:1.1}
+.sub{color:var(--ink60);margin:0 0 26px;max-width:46em}
+.grid3{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:760px){.grid3{grid-template-columns:repeat(3,1fr)}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:18px}
+.card h3{margin:0 0 7px;font-size:18px;font-weight:600}
+.card p{margin:0;color:var(--ink60);font-size:15.5px}
+.card .n{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--magenta);display:block;margin-bottom:9px}
+
+/* boats */
+.boats{display:grid;grid-template-columns:1fr;gap:14px;align-items:start}
+@media(min-width:820px){.boats{grid-template-columns:1fr 340px;gap:32px}}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink60);font-weight:500}
+td.num{font-family:'IBM Plex Mono',monospace;color:var(--ink60);white-space:nowrap}
+td .tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--magenta)}
+
+/* compare */
+.cmp td:nth-child(2),.cmp td:nth-child(3),.cmp th:nth-child(2),.cmp th:nth-child(3){text-align:center;width:96px}
+.yes{color:var(--teal);font-weight:600}
+.no{color:var(--ink30)}
+
+/* pricing */
+.prices{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:760px){.prices{grid-template-columns:repeat(3,1fr)}}
+.price{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:20px;display:flex;flex-direction:column}
+.price.feat{border-color:var(--magenta);box-shadow:0 0 0 1px var(--magenta) inset}
+.price .tier{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink60);margin-bottom:8px}
+.price .amt{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:38px;letter-spacing:-.04em;line-height:1}
+.price .per{font-size:14px;color:var(--ink60);margin:4px 0 14px}
+.price ul{margin:0 0 18px;padding-left:17px;font-size:15px;color:var(--ink60)}
+.price li{margin-bottom:5px}
+.price .btn{margin-top:auto;text-align:center}
+.pnote{font-size:13px;color:var(--ink60);margin-top:14px}
+
+/* faq */
+details{border-bottom:1px solid var(--line);padding:13px 0}
+details summary{cursor:pointer;font-size:17px;font-weight:600;list-style:none}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"+";color:var(--magenta);margin-right:9px;font-family:'IBM Plex Mono',monospace}
+details[open] summary::before{content:"−"}
+details p{color:var(--ink60);margin:9px 0 0;max-width:48em}
+
+footer{padding:34px 0 60px;font-size:14px;color:var(--ink60)}
+footer a{color:var(--ink60)}
+.disclaimer{border-left:2px solid var(--magenta);padding-left:12px;margin-top:16px;max-width:44em}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="logo" href="#top">TRIM</a>
+  <a class="l" href="#how">How it works</a>
+  <a class="l" href="#boats">Boats</a>
+  <a class="l" href="#pricing">Pricing</a>
+  <span class="sp"></span>
+  <a class="btn sm" href="./app.html">Open the trainer</a>
+</div></nav>
+
+<header id="top"><div class="wrap hero">
+  <div>
+    <p class="kicker">Sail trim trainer</p>
+    <h1>Learn to trim.<br />Stop <em>guessing</em>.</h1>
+    <p class="lede">Every control on the boat, wired to a real velocity prediction model.
+      Move the traveller and the numbers move for a reason — because the angle of attack changed,
+      the leech twisted, the side force went up and the boat heeled.</p>
+    <div class="cta">
+      <a class="btn" href="./app.html">Start trimming — free</a>
+      <a class="btn ghost" href="#pricing">See Pro</a>
+      <span class="note">No account. Runs in the browser.</span>
+    </div>
+  </div>
+  <div class="shot">
+    <img src="./shot-mono.svg" alt="3D view of a 40 ft cruiser-racer sailing upwind, sails shaded by flow state" />
+    <div class="cap">40 ft cruiser-racer · 16 kn TWS · 52° TWA · 6.76 kn</div>
+  </div>
+</div></header>
+
+<section id="how"><div class="wrap">
+  <h2>Three things a picture of a boat can't teach you</h2>
+  <p class="sub">Most sailing apps animate a boat. This one solves it — apparent wind, lift and drag
+    per sail, forestay sag, heel, leeway, rudder drag and added resistance in waves, recomputed
+    around sixty times a second.</p>
+  <div class="grid3">
+    <div class="card">
+      <span class="n">01 — Target</span>
+      <h3>A target speed that is computed</h3>
+      <p>The target isn't a lookup table. It re-solves the same physics with optimal trim for your
+        exact wind, angle and sea state. So the percentage measures your trimming alone — not the
+        boat, and not the breeze.</p>
+    </div>
+    <div class="card">
+      <span class="n">02 — Coach</span>
+      <h3>Advice ranked by what it's worth</h3>
+      <p>Every hint carries the drive it expects to add. You learn which controls matter where:
+        upwind in breeze the backstay dominates, at 120° it's the vang and the pole. That ranking
+        is the lesson.</p>
+    </div>
+    <div class="card">
+      <span class="n">03 — Shape</span>
+      <h3>See the shape you're making</h3>
+      <p>Cutaway sections at head, middle and foot show camber, draft position and twist as you
+        pull the string. Colour tells you which part of the sail is off the groove — the top can
+        stall while the bottom is perfect.</p>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap boats">
+  <div>
+    <h2>Read the sail, not the dial</h2>
+    <p class="sub">Telltales are measured against optimal trim for the angle you're sailing, so they
+      mean something downwind too — where every sail is technically stalled and an absolute reading
+      would tell you nothing. Magenta is under-trimmed, amber over-trimmed, teal is in the groove.</p>
+    <table>
+      <tr><th>Colour</th><th>What it means</th><th>What to do</th></tr>
+      <tr><td><span style="color:#BE2478">Magenta</span></td><td>Windward telltale lifting</td><td>Sheet in, or bear away</td></tr>
+      <tr><td><span style="color:#C77E12">Amber</span></td><td>Leeward telltale stalling</td><td>Ease, or head up</td></tr>
+      <tr><td><span style="color:#0C7B85">Teal</span></td><td>Both streaming</td><td>Hold it</td></tr>
+    </table>
+  </div>
+  <div class="shot">
+    <img src="./shot-section.svg" alt="Sail cutaway sections showing an over-eased headsail luffing at all three heights" />
+    <div class="cap">Sections · headsail over-eased · 5.81 kn</div>
+  </div>
+</div></section>
+
+<section id="boats"><div class="wrap boats">
+  <div>
+    <h2>Five boats that behave differently</h2>
+    <p class="sub">Not one hull with different numbers painted on it. Monohulls get their stability
+      from ballast, catamarans from beam — a different equation, which is why the cat carries 117 m²
+      at three degrees of heel and warns you about righting moment instead of heel angle.</p>
+    <table>
+      <tr><th>Boat</th><th>Disp</th><th>Beam</th><th>SA</th><th></th></tr>
+      <tr><td>40 ft cruiser-racer</td><td class="num">8.6 t</td><td class="num">4.0 m</td><td class="num">94 m²</td><td><span class="tag">Free</span></td></tr>
+      <tr><td>35 ft sportboat</td><td class="num">3.8 t</td><td class="num">3.4 m</td><td class="num">74 m²</td><td></td></tr>
+      <tr><td>48 ft bluewater cruiser</td><td class="num">18 t</td><td class="num">4.5 m</td><td class="num">132 m²</td><td></td></tr>
+      <tr><td>42 ft cruising catamaran</td><td class="num">12.5 t</td><td class="num">7.2 m</td><td class="num">117 m²</td><td></td></tr>
+      <tr><td>45 ft performance catamaran</td><td class="num">9.0 t</td><td class="num">7.6 m</td><td class="num">140 m²</td><td></td></tr>
+    </table>
+  </div>
+  <div class="shot">
+    <img src="./shot-cat.svg" alt="3D view of a 42 ft cruising catamaran reaching" />
+    <div class="cap">42 ft cruising catamaran · 18 kn TWS · 72° TWA · 9.10 kn</div>
+  </div>
+</div></section>
+
+<section><div class="wrap boats">
+  <div>
+    <h2>Weather you can read</h2>
+    <p class="sub">The sea state is a wave field, not a texture: three components fanned around the
+      wind direction with sharpened crests, plus short chop that gives the water its texture and
+      shows the cat's-paws. Crests break where the wind is strong enough to break them, and the
+      whole scene — sky, sea, cloud cover — greys down as it builds.</p>
+    <table>
+      <tr><th>What you'll notice</th><th>Why it's there</th></tr>
+      <tr><td>The boat pitches and heaves</td><td>Attitude is sampled from the wave under the hull, bow to stern</td></tr>
+      <tr><td>Whitecaps appear around 12 kn</td><td>Breaking is driven by wind, not by the swell height</td></tr>
+      <tr><td>Sails look like cloth when right</td><td>Correct trim reads as dacron; errors bloom magenta or amber</td></tr>
+      <tr><td>Bow wave grows with speed</td><td>Kelvin wedge scaled off boat speed, with transom wash astern</td></tr>
+    </table>
+  </div>
+  <div class="shot">
+    <img src="./shot-weather.svg" alt="A 40 ft cruiser-racer beating in 28 knots and a 2.8 m sea, whitecaps breaking downwind" />
+    <div class="cap">28 kn TWS · 2.8 m sea · one reef · 6.31 kn</div>
+  </div>
+</div></section>
+
+<section id="pricing"><div class="wrap">
+  <h2>Easy Trim is free. Forever.</h2>
+  <p class="sub">The free tier is a real trainer, not a teaser: a full boat, live target speed and the
+    controls you actually pull on a Wednesday evening. Pro is for people who want to take it apart.</p>
+
+  <table class="cmp">
+    <tr><th>&nbsp;</th><th>Easy Trim</th><th>Pro</th></tr>
+    <tr><td>40 ft cruiser-racer</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+    <tr><td>Cockpit and plan views</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+    <tr><td>Sheets, traveller, vang, outhaul, car</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+    <tr><td>Live target speed and % of target</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+    <tr><td>Coach hints ranked by gain</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+    <tr><td>English / Estonian</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+    <tr><td>3D rig view with orbit and camera presets</td><td class="no">—</td><td class="yes">✓</td></tr>
+    <tr><td>Sail cutaway sections</td><td class="no">—</td><td class="yes">✓</td></tr>
+    <tr><td>Five boats, including two catamarans</td><td class="no">—</td><td class="yes">✓</td></tr>
+    <tr><td>Backstay, runners, cunningham, halyards, furling, pole</td><td class="no">—</td><td class="yes">✓</td></tr>
+    <tr><td>Gusts, shifts, sea state, current</td><td class="no">—</td><td class="yes">✓</td></tr>
+    <tr><td>Polar diagram and ideal-trim marks</td><td class="no">—</td><td class="yes">✓</td></tr>
+    <tr><td>New boats and features as they land</td><td class="no">—</td><td class="yes">✓</td></tr>
+  </table>
+
+  <div class="prices" style="margin-top:26px">
+    <div class="price">
+      <div class="tier">Easy Trim</div>
+      <div class="amt">Free</div>
+      <div class="per">no account, no card</div>
+      <ul>
+        <li>One boat, fully simulated</li>
+        <li>Core trim controls</li>
+        <li>Target speed and coaching</li>
+      </ul>
+      <a class="btn ghost" href="./app.html">Open the trainer</a>
+    </div>
+    <div class="price feat">
+      <div class="tier">Pro · monthly</div>
+      <div class="amt">€6</div>
+      <div class="per">per month, cancel any time</div>
+      <ul>
+        <li>Everything in the table above</li>
+        <li>All five boats</li>
+        <li>3D and cutaway views</li>
+        <li>Full weather and sea state</li>
+      </ul>
+      <a class="btn pink" href="./app.html?upgrade=1">Go Pro</a>
+    </div>
+    <div class="price">
+      <div class="tier">Pro · yearly</div>
+      <div class="amt">€54</div>
+      <div class="per">per year — two months free</div>
+      <ul>
+        <li>Same as monthly</li>
+        <li>Priced for one season</li>
+        <li>Crew licences on request</li>
+      </ul>
+      <a class="btn ghost" href="./app.html?upgrade=1">Go Pro yearly</a>
+    </div>
+  </div>
+  <p class="pnote">Prices shown are placeholders until checkout is connected — see README.md.
+    Crew and sailing-school licences: get in touch.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Questions</h2>
+  <details><summary>Is this a game?</summary>
+    <p>No. There is no course to race and nothing to win. It's a trim bench: set a wind and an angle,
+      pull strings, and watch what the boat does. The scoring is a percentage of the speed the same
+      boat would make with optimal trim in the same conditions.</p></details>
+  <details><summary>How accurate is it?</summary>
+    <p>The monohull polars land within roughly five per cent of published polars for boats of that
+      size across most angles. The catamarans are close at reaching angles and a little optimistic
+      dead downwind. It's calibrated well enough to teach trim relationships; it is not a routing
+      or performance-prediction tool, and you should not plan a passage with it.</p></details>
+  <details><summary>Will it make me faster on the water?</summary>
+    <p>It will make you quicker at knowing which string to pull and why, which is most of it. It
+      cannot teach you what a gust looks like coming across the water, and it will not replace hours
+      on the helm.</p></details>
+  <details><summary>Does it work on a phone?</summary>
+    <p>Yes. The view stays pinned at the top while you scroll to the controls, so you can see the
+      sail change as you drag a slider. The 3D view orbits with one finger.</p></details>
+  <details><summary>Can I cancel?</summary>
+    <p>Any time, and you keep Easy Trim for good. Nothing you have done is locked away behind
+      the subscription.</p></details>
+</div></section>
+
+<footer><div class="wrap">
+  <p><strong class="disp">TRIM</strong> — a sail trim trainer.
+    <a href="./app.html">Open the trainer</a> ·
+    <a href="./privacy.html">Privacy</a> ·
+    <a href="mailto:hello@sailtrainer.eu?subject=Trim%20feedback">Tell me what's wrong</a></p>
+  <p class="disclaimer">A training aid only. Not for navigation, passage planning or any decision
+    that matters at sea. Sail conservatively and reef before you need to.</p>
+</div></footer>
+
+</body>
+</html>

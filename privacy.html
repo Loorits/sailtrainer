@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Privacy — Trim</title>
+<meta name="description" content="What sailtrainer.eu stores, loads and measures." />
+<link rel="canonical" href="https://sailtrainer.eu/privacy.html" />
+<link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+<meta name="robots" content="index,follow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Barlow+Semi+Condensed:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{--paper:#E7EDE9;--panel:#F5F8F5;--ink:#11242C;--ink60:rgba(17,36,44,.62);
+  --line:rgba(17,36,44,.16);--magenta:#BE2478}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:'Barlow Semi Condensed',system-ui,sans-serif;font-size:17px;line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px}
+nav{border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:18px;height:54px}
+nav a.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:23px;
+  letter-spacing:-.04em;text-decoration:none;color:var(--ink)}
+nav a.l{margin-left:auto;color:var(--ink60);text-decoration:none;font-size:14.5px}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.035em;
+  font-size:38px;margin:38px 0 6px}
+.upd{color:var(--ink60);font-size:14px;margin:0 0 26px}
+h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.03em;
+  font-size:21px;margin:30px 0 8px}
+p,li{color:var(--ink)}
+p{margin:0 0 12px}
+ul{margin:0 0 12px;padding-left:20px}
+li{margin-bottom:5px}
+.muted{color:var(--ink60)}
+.box{background:var(--panel);border:1px solid var(--line);border-left:2px solid var(--magenta);
+  padding:14px 16px;margin:18px 0;border-radius:2px}
+footer{margin:44px 0 60px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--ink60);font-size:14px}
+footer a{color:var(--ink60)}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="./index.html">TRIM</a>
+  <a class="l" href="./app.html">Open the trainer</a>
+</div></nav>
+
+<div class="wrap">
+  <h1>Privacy</h1>
+  <p class="upd">Last updated: <!-- EDIT THIS DATE WHEN YOU CHANGE THE PAGE -->14 August 2026</p>
+
+  <p>Short version: there are no accounts, and the trainer runs entirely in your browser.
+    Nothing you do with the sails is sent anywhere.</p>
+
+  <h2>What runs on your device</h2>
+  <p>The whole simulation — the physics, the boats, the 3D view — is JavaScript running locally.
+    Your trim settings, wind conditions and boat choice never leave your browser and are not
+    recorded.</p>
+
+  <h2>What is stored on your device</h2>
+  <ul>
+    <li><strong>One localStorage entry</strong> (<code>trim.tier</code>), which remembers whether you
+      have unlocked the Pro features. It contains no personal information. Clearing your browser
+      storage removes it.</li>
+  </ul>
+  <p class="muted">No cookies are set by this site.</p>
+
+  <h2>What is loaded from elsewhere</h2>
+  <ul>
+    <li><strong>Google Fonts</strong> (fonts.googleapis.com, fonts.gstatic.com) — serves the
+      typefaces. Google receives your IP address as part of that request.</li>
+    <li><strong>esm.sh</strong> — serves the React library the trainer is built on. Same applies.</li>
+  </ul>
+
+  <div class="box">
+    <p style="margin:0"><strong>Analytics.</strong> This site uses
+      <!-- EDIT: name your provider, or delete this whole box if you use none -->
+      Plausible Analytics, which counts page views without cookies and without tracking or
+      identifying individual visitors. It records aggregate figures such as how many people opened
+      the trainer and which pages referred them. No personal data is collected and nothing is sold
+      or shared.</p>
+  </div>
+
+  <h2>Payments</h2>
+  <p>Payments are not currently accepted. When they are, checkout will be handled by a third-party
+    payment provider, and this page will be updated to name them and explain what they hold.
+    Card details will never pass through this site.</p>
+
+  <h2>Your rights</h2>
+  <p>Under the GDPR you have the right to access, correct and erase personal data held about you.
+    Since this site holds no personal data, there is in practice nothing to request — but if you
+    believe otherwise, write to the address below and I will look into it.</p>
+
+  <h2>Contact</h2>
+  <p>
+    <!-- EDIT: your OÜ name, registry code and address belong here -->
+    [Company name] OÜ · registry code [nnnnnnnn] · Estonia<br />
+    <a href="mailto:hello@sailtrainer.eu">hello@sailtrainer.eu</a>
+  </p>
+
+  <footer>
+    <p><a href="./index.html">Back to sailtrainer.eu</a></p>
+    <p>Trim is a training aid only. Not for navigation, passage planning or any decision that
+      matters at sea.</p>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Trim — sail trim trainer</title>
+<meta name="description" content="A sail trim trainer with real VPP physics. Trim the sails, see what changes, chase the target speed." />
+<meta name="theme-color" content="#E7EDE9" />
+<link rel="canonical" href="https://sailtrainer.eu/app.html" />
+<link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<style>
+  :root{
+    --paper:#E7EDE9; --panel:#F5F8F5; --ink:#11242C; --ink60:rgba(17,36,44,.60);
+    --line:rgba(17,36,44,.16); --magenta:#BE2478; --teal:#0C7B85;
+  }
+  html,body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Barlow Semi Condensed',system-ui,-apple-system,sans-serif;}
+  #root{max-width:1180px;margin:0 auto;}
+  .topbar{display:flex;align-items:center;gap:10px;padding:8px 12px 0;max-width:1180px;margin:0 auto;}
+  .brand{font-family:'Bricolage Grotesque','Barlow Semi Condensed',sans-serif;font-weight:800;
+    font-size:20px;letter-spacing:-.03em;color:var(--ink);text-decoration:none}
+  .badge{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink60);
+    border:1px solid var(--line);padding:2px 8px;border-radius:2px}
+  .badge.pro{color:var(--magenta);border-color:rgba(190,36,120,.45)}
+  .tb-btn{margin-left:auto;font:inherit;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+    padding:4px 11px;border:1px solid var(--line);background:transparent;color:var(--ink60);
+    cursor:pointer;text-decoration:none;border-radius:2px}
+  .tb-btn.go{background:var(--magenta);border-color:var(--magenta);color:#fff}
+  .boot{padding:60px 16px;text-align:center;color:var(--ink60);font-size:15px}
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.3.1",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client"
+  }
+}
+</script>
+</head>
+<body>
+  <div id="root"><div class="boot">Loading the trainer…</div></div>
+  <script type="module" src="./app.js"></script>
+  <noscript><div class="boot">This trainer needs JavaScript enabled.</div></noscript>
+</body>
+</html>
